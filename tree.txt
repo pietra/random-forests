@@ -1,0 +1,17 @@
+ventoso
+├── 'falso'
+│   └── umidade
+│       ├── 'alta'
+│       │   └── temperatura
+│       │       ├── 'quente'
+│       │       │   └── tempo
+│       │       │       ├── 'ensolarado'
+│       │       │       │   └── 'não'
+│       │       │       └── 'nublado'
+│       │       │           └── 'sim'
+│       │       └── 'amena'
+│       │           └── 'sim'
+│       └── 'normal'
+│           └── 'sim'
+└── 'verdadeiro'
+    └── 'não'

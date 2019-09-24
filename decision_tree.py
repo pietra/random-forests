@@ -2,9 +2,10 @@ import sys
 
 from collections import Counter
 import random
+from anytree import Node
 
 from dataset_reader import read_dataset
-from anytree import Node, RenderTree
+from util import write_tree_on_file, print_tree
 
 
 def main():
@@ -13,6 +14,7 @@ def main():
     tree = Node("Decision Tree")
     final_decision_tree = decision_tree(dataset, attributes, tree)
     print_tree(final_decision_tree)
+    write_tree_on_file(final_decision_tree)
 
 
 def decision_tree(dataset, attributes, father=None):
@@ -68,11 +70,6 @@ def remove_repeated_values_of_list(list_of_values):
 def most_frequent(List):
     occurence_count = Counter(List)
     return occurence_count.most_common(1)[0][0]
-
-
-def print_tree(tree):
-    for pre, fill, node in RenderTree(tree):
-        print("%s%s" % (pre, node.name))
 
 
 if __name__ == "__main__":
