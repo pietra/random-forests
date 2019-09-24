@@ -1,12 +1,14 @@
-from dataset_reader import read_dataset
+import sys
+
 from collections import Counter
 import random
 
+from dataset_reader import read_dataset
 from anytree import Node, RenderTree
 
 
 def main():
-    dataset, attributes = read_dataset("dataset_joga_tenis.csv")
+    dataset, attributes = read_dataset(sys.argv[1])
     attributes.remove('class')
     tree = Node("Decision Tree")
     final_decision_tree = decision_tree(dataset, attributes, tree)
