@@ -1,7 +1,7 @@
 import sys
+import random
 
 from collections import Counter
-import random
 from anytree import Node
 
 from dataset_reader import read_dataset

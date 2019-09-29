@@ -1,17 +1,19 @@
-ventoso
-├── 'falso'
-│   └── umidade
-│       ├── 'alta'
-│       │   └── temperatura
-│       │       ├── 'quente'
-│       │       │   └── tempo
-│       │       │       ├── 'ensolarado'
+umidade
+├── 'alta'
+│   └── ventoso
+│       ├── 'falso'
+│       │   └── tempo
+│       │       ├── 'ensolarado'
+│       │       │   └── temperatura
+│       │       │       ├── 'quente'
 │       │       │       │   └── 'não'
-│       │       │       └── 'nublado'
+│       │       │       └── 'amena'
 │       │       │           └── 'sim'
-│       │       └── 'amena'
+│       │       ├── 'nublado'
+│       │       │   └── 'sim'
+│       │       └── 'chuvoso'
 │       │           └── 'sim'
-│       └── 'normal'
-│           └── 'sim'
-└── 'verdadeiro'
-    └── 'não'
+│       └── 'verdadeiro'
+│           └── 'não'
+└── 'normal'
+    └── 'sim'
