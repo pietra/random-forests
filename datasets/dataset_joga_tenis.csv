@@ -6,7 +6,7 @@
 'chuvoso','fria','normal','falso','sim'
 'chuvoso','fria','normal','verdadeiro','não'
 'nublado','fria','normal','verdadeiro','sim'
-'ensolarado','amena','alta','falso','sim'
+'ensolarado','amena','alta','falso','não'
 'ensolarado','fria','normal','falso','sim'
 'chuvoso','amena','normal','falso','sim'
 'ensolarado','amena','normal','verdadeiro','sim'
