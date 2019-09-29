@@ -7,7 +7,10 @@ def id3_algorithm(dataset, attributes):
     gain_information = 0
     choosen_attribute = None
     for attribute in attributes:
-        if gain_information <= gain_information_of_attribute(dataset, attribute):
+        new_gain_information = gain_information_of_attribute(
+            dataset, attribute)
+        if gain_information <= new_gain_information:
+            gain_information = new_gain_information
             choosen_attribute = attribute
 
     return choosen_attribute
