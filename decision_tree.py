@@ -1,11 +1,11 @@
 import sys
-import random
 
 from collections import Counter
 from anytree import Node
 
 from dataset_reader import read_dataset
 from util import write_tree_on_file, print_tree
+from attributes_selection import id3_algorithm
 
 
 def main():
@@ -30,7 +30,7 @@ def decision_tree(dataset, attributes, father=None):
 
     else:
         # Choose a attribute
-        attribute = random.choice(attributes)  # TODO: choice can't be random
+        attribute = id3_algorithm(dataset, attributes)
         attributes.remove(attribute)
         values_of_that_attribute = dataset[attribute].values.tolist()
         values_of_that_attribute = remove_repeated_values_of_list(

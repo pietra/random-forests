@@ -1,19 +1,21 @@
-umidade
-├── 'alta'
-│   └── ventoso
-│       ├── 'falso'
-│       │   └── tempo
-│       │       ├── 'ensolarado'
-│       │       │   └── temperatura
-│       │       │       ├── 'quente'
-│       │       │       │   └── 'não'
-│       │       │       └── 'amena'
-│       │       │           └── 'sim'
-│       │       ├── 'nublado'
-│       │       │   └── 'sim'
-│       │       └── 'chuvoso'
-│       │           └── 'sim'
-│       └── 'verdadeiro'
-│           └── 'não'
-└── 'normal'
-    └── 'sim'
+credit_rating
+├── 'fair'
+│   └── student
+│       ├── 'no'
+│       │   └── income
+│       │       ├── 'high'
+│       │       │   └── age
+│       │       │       ├── 'youth'
+│       │       │       │   └── 'no'
+│       │       │       └── 'middle_aged'
+│       │       │           └── 'yes'
+│       │       └── 'medium'
+│       │           └── 'yes'
+│       ├── 'yes'
+│       │   └── 'yes'
+│       └── 'yes˝'
+│           └── 'yes'
+├── 'excellent'
+│   └── 'yes'
+└── 'excelent'
+    └── 'no'

@@ -3,11 +3,14 @@ import math
 from dataset_reader import read_dataset
 
 
-def id3_algorithm():
-    dataset, attributes = read_dataset("datasets/dataset_buys_computer.csv")
-    attributes.remove('class')
+def id3_algorithm(dataset, attributes):
+    gain_information = 0
+    choosen_attribute = None
+    for attribute in attributes:
+        if gain_information <= gain_information_of_attribute(dataset, attribute):
+            choosen_attribute = attribute
 
-    print(gain_information_of_attribute(dataset, "age"))
+    return choosen_attribute
 
 
 def gain_information_of_attribute(dataset, attribute):
@@ -43,7 +46,3 @@ def entropy(dataset):
 
 def remove_repeated_values_of_list(list_of_values):
     return list(dict.fromkeys(list_of_values))
-
-
-if __name__ == "__main__":
-    id3_algorithm()
