@@ -32,12 +32,12 @@ def gain_information_of_attribute(dataset, attribute, attributes_types):
         median = calculate_median_of_attribute(dataset, attribute)
 
         # value of attribute <= median
-        dataset_with_value = dataset[dataset[attribute] >= median]
+        dataset_with_value = dataset[dataset[attribute] <= median]
         gain_information += gain_information_of_value(
             dataset, dataset_with_value)
 
         # value of attribute > median
-        dataset_with_value = dataset[dataset[attribute] < median]
+        dataset_with_value = dataset[dataset[attribute] > median]
         gain_information += gain_information_of_value(
             dataset, dataset_with_value)
 
