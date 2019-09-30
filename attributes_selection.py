@@ -12,7 +12,6 @@ def id3_algorithm(dataset, attributes):
         if gain_information <= new_gain_information:
             gain_information = new_gain_information
             choosen_attribute = attribute
-
     return choosen_attribute
 
 
