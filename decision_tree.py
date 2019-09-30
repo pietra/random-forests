@@ -19,7 +19,7 @@ def decision_tree(dataset, attributes, attributes_types, father=None):
         Node(return_most_common_value(classes), parent=father)
 
     else:
-        attribute = id3_algorithm(dataset, attributes)
+        attribute = id3_algorithm(dataset, attributes, attributes_types)
         attributes.remove(attribute)
 
         new_node = Node(attribute, parent=father)
