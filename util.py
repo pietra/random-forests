@@ -1,3 +1,5 @@
+import statistics
+
 from anytree import RenderTree
 
 from dataclasses import dataclass
@@ -35,3 +37,18 @@ def read_attributes_type(f_path):
     f.close()
 
     return attributes_types
+
+
+def remove_repeated_values_of_list(list_of_values):
+    return list(dict.fromkeys(list_of_values))
+
+
+def find_attribute_type(attribute, attributes_types):
+    for attribute_type in attributes_types:
+        if attribute_type.name == attribute:
+            return attribute_type.type_of
+
+
+def calculate_median_of_attribute(dataset, attribute):
+    attribute_column = dataset[attribute]
+    return statistics.median(attribute_column)

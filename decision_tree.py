@@ -7,7 +7,7 @@ from collections import Counter
 from anytree import Node
 
 from dataset_reader import read_dataset
-from util import write_tree_on_file, print_tree, read_attributes_type
+from util import write_tree_on_file, print_tree, read_attributes_type, find_attribute_type, calculate_median_of_attribute, remove_repeated_values_of_list
 from attributes_selection import id3_algorithm
 
 
@@ -41,7 +41,6 @@ def decision_tree(dataset, attributes, attributes_types, use_sample_attributes, 
                 dataset_filtered_by_value = dataset[dataset[attribute] == value]
                 create_value_node(
                     value, new_node, dataset_filtered_by_value, dataset, attributes, attributes_types, use_sample_attributes)
-            return new_node
 
         else:
             median = calculate_median_of_attribute(dataset, attribute)
@@ -58,7 +57,7 @@ def decision_tree(dataset, attributes, attributes_types, use_sample_attributes, 
             create_value_node(value, new_node, dataset_filtered_by_value,
                               dataset, attributes, attributes_types, use_sample_attributes)
 
-            return new_node
+        return new_node
 
 
 def create_value_node(value, new_node, dataset_filtered_by_value, dataset, attributes, attributes_types, use_sample_attributes):
@@ -83,24 +82,9 @@ def is_dataset_with_only_one_class(dataset):
     return False
 
 
-def remove_repeated_values_of_list(list_of_values):
-    return list(dict.fromkeys(list_of_values))
-
-
 def return_most_common_value(a_list):
     occurence_count = Counter(a_list)
     return occurence_count.most_common(1)[0][0]
-
-
-def find_attribute_type(attribute, attributes_types):
-    for attribute_type in attributes_types:
-        if attribute_type.name == attribute:
-            return attribute_type.type_of
-
-
-def calculate_median_of_attribute(dataset, attribute):
-    attribute_column = dataset[attribute]
-    return statistics.median(attribute_column)
 
 
 def create_sample_of_attributes(attributes):

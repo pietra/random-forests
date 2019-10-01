@@ -2,6 +2,7 @@ import math
 import statistics
 
 from dataset_reader import read_dataset
+from util import find_attribute_type, calculate_median_of_attribute, remove_repeated_values_of_list
 
 
 def id3_algorithm(dataset, attributes, attributes_types):
@@ -59,18 +60,3 @@ def entropy(dataset):
                              math.log2(probability_of_class))
 
     return -entropy
-
-
-def remove_repeated_values_of_list(list_of_values):
-    return list(dict.fromkeys(list_of_values))
-
-
-def find_attribute_type(attribute, attributes_types):
-    for attribute_type in attributes_types:
-        if attribute_type.name == attribute:
-            return attribute_type.type_of
-
-
-def calculate_median_of_attribute(dataset, attribute):
-    attribute_column = dataset[attribute]
-    return statistics.median(attribute_column)
