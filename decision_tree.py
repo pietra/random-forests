@@ -1,5 +1,7 @@
 import sys
 import statistics
+import random
+import math
 
 from collections import Counter
 from anytree import Node
@@ -9,7 +11,7 @@ from util import write_tree_on_file, print_tree, read_attributes_type
 from attributes_selection import id3_algorithm
 
 
-def decision_tree(dataset, attributes, attributes_types, father=None):
+def decision_tree(dataset, attributes, attributes_types, use_sample_attributes, father=None):
     some_class = is_dataset_with_only_one_class(dataset)
     if some_class:
         Node(some_class, parent=father)
@@ -19,7 +21,12 @@ def decision_tree(dataset, attributes, attributes_types, father=None):
         Node(return_most_common_value(classes), parent=father)
 
     else:
-        attribute = id3_algorithm(dataset, attributes, attributes_types)
+        if(use_sample_attributes == 'sim'):
+            attributes_sample = create_sample_of_attributes(attributes)
+            attribute = id3_algorithm(
+                dataset, attributes_sample, attributes_types)
+        else:
+            attribute = id3_algorithm(dataset, attributes, attributes_types)
         attributes.remove(attribute)
 
         new_node = Node(attribute, parent=father)
@@ -33,7 +40,7 @@ def decision_tree(dataset, attributes, attributes_types, father=None):
             for value in values_of_that_attribute:
                 dataset_filtered_by_value = dataset[dataset[attribute] == value]
                 create_value_node(
-                    value, new_node, dataset_filtered_by_value, dataset, attributes, attributes_types)
+                    value, new_node, dataset_filtered_by_value, dataset, attributes, attributes_types, use_sample_attributes)
             return new_node
 
         else:
@@ -43,18 +50,18 @@ def decision_tree(dataset, attributes, attributes_types, father=None):
             dataset_filtered_by_value = dataset[dataset[attribute] <= median]
             value = '<= ' + str(median)
             create_value_node(value, new_node, dataset_filtered_by_value,
-                              dataset, attributes, attributes_types)
+                              dataset, attributes, attributes_types, use_sample_attributes)
 
             # node with value > median
             dataset_filtered_by_value = dataset[dataset[attribute] > median]
-            value = '>' + str(median)
+            value = '> ' + str(median)
             create_value_node(value, new_node, dataset_filtered_by_value,
-                              dataset, attributes, attributes_types)
+                              dataset, attributes, attributes_types, use_sample_attributes)
 
             return new_node
 
 
-def create_value_node(value, new_node, dataset_filtered_by_value, dataset, attributes, attributes_types):
+def create_value_node(value, new_node, dataset_filtered_by_value, dataset, attributes, attributes_types, use_sample_attributes):
     value_node = Node(value, parent=new_node)
 
     # There are no instances for that value
@@ -63,7 +70,7 @@ def create_value_node(value, new_node, dataset_filtered_by_value, dataset, attri
         Node(return_most_common_value(classes), parent=value_node)
     else:
         decision_tree(
-            dataset_filtered_by_value, attributes, attributes_types, value_node)
+            dataset_filtered_by_value, attributes, attributes_types, use_sample_attributes, value_node)
 
 
 def is_dataset_with_only_one_class(dataset):
@@ -94,3 +101,12 @@ def find_attribute_type(attribute, attributes_types):
 def calculate_median_of_attribute(dataset, attribute):
     attribute_column = dataset[attribute]
     return statistics.median(attribute_column)
+
+
+def create_sample_of_attributes(attributes):
+    attributes_sample = []
+    square = int(math.sqrt(len(attributes)))
+    for i in range(square):
+        attributes_sample.append(random.choice(attributes))
+
+    return attributes_sample
