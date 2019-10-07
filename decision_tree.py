@@ -4,7 +4,7 @@ import random
 import math
 
 from collections import Counter
-from anytree import Node
+from anytree import Node, RenderTree
 
 from dataset_reader import read_dataset
 from util import write_tree_on_file, print_tree, read_attributes_type, find_attribute_type, calculate_median_of_attribute, remove_repeated_values_of_list
@@ -94,3 +94,29 @@ def create_sample_of_attributes(attributes):
         attributes_sample.append(random.choice(attributes))
 
     return attributes_sample
+
+
+def classify_instances(dataset, tree):
+    classes = []
+
+    rendered_tree = RenderTree(tree)
+    root = rendered_tree.node
+    for index, row in dataset.iterrows():
+        node = walk_tree_classifying_instance(root, row)
+        classes.append(eval(node.name))
+
+    return classes
+
+
+def walk_tree_classifying_instance(node, instance):
+    if node.is_leaf:
+        return node
+    else:
+        attribute = node.name
+        children = node.children
+
+        value = eval(instance[attribute])
+
+        for child in children:
+            if eval(child.name) == value:
+                return walk_tree_classifying_instance(child.children[0], instance)
