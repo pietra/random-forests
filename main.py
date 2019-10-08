@@ -20,17 +20,24 @@ def main():
     use_sample_attributes = sys.argv[3]
     number_of_trees = int(sys.argv[4])
 
-    bootstraps, training_sets = create_bootstraps(dataset, number_of_trees)
-
     attributes.remove('class')
-    tree = Node("Decision Tree")
-    final_decision_tree = decision_tree(
-        dataset, attributes, attributes_types, use_sample_attributes, tree)
 
-    classes = classify_instances(dataset, final_decision_tree)
+    # Ensemble:
+    bootstraps, training_sets = create_bootstraps(dataset, number_of_trees)
+    trees = []
 
-    print_tree(final_decision_tree)
-    write_tree_on_file(final_decision_tree)
+    for i in range(number_of_trees):
+        tree = Node("Decision Tree {}".format(i))
+        final_decision_tree = decision_tree(
+            dataset, bootstraps[i], attributes[:], attributes_types, use_sample_attributes, tree)
+        trees.append(final_decision_tree)
+
+    classes = classify_instances(dataset, trees)
+
+    for tree in trees:
+        print_tree(tree)
+
+    #write_tree_on_file(final_decision_tree)
 
 
 if __name__ == "__main__":

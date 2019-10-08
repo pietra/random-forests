@@ -11,7 +11,7 @@ from util import write_tree_on_file, print_tree, read_attributes_type, find_attr
 from attributes_selection import id3_algorithm
 
 
-def decision_tree(dataset, attributes, attributes_types, use_sample_attributes, father=None):
+def decision_tree(original_dataset, dataset, attributes, attributes_types, use_sample_attributes, father=None):
     some_class = is_dataset_with_only_one_class(dataset)
     if some_class:
         Node(some_class, parent=father)
@@ -34,13 +34,13 @@ def decision_tree(dataset, attributes, attributes_types, use_sample_attributes, 
         attribute_type = find_attribute_type(attribute, attributes_types)
         if(attribute_type == 'categorico'):
             values_of_that_attribute = remove_repeated_values_of_list(
-                dataset[attribute].values.tolist())
+                original_dataset[attribute].values.tolist())
 
             # For each value of that attribute
             for value in values_of_that_attribute:
                 dataset_filtered_by_value = dataset[dataset[attribute] == value]
                 create_value_node(
-                    value, new_node, dataset_filtered_by_value, dataset, attributes, attributes_types, use_sample_attributes)
+                    value, new_node, original_dataset, dataset_filtered_by_value, dataset, attributes, attributes_types, use_sample_attributes)
 
         else:
             median = calculate_median_of_attribute(dataset, attribute)
@@ -48,19 +48,19 @@ def decision_tree(dataset, attributes, attributes_types, use_sample_attributes, 
             # node with value <= median
             dataset_filtered_by_value = dataset[dataset[attribute] <= median]
             value = '<= ' + str(median)
-            create_value_node(value, new_node, dataset_filtered_by_value,
+            create_value_node(value, new_node, original_dataset, dataset_filtered_by_value,
                               dataset, attributes, attributes_types, use_sample_attributes)
 
             # node with value > median
             dataset_filtered_by_value = dataset[dataset[attribute] > median]
             value = '> ' + str(median)
-            create_value_node(value, new_node, dataset_filtered_by_value,
+            create_value_node(value, new_node, original_dataset, dataset_filtered_by_value,
                               dataset, attributes, attributes_types, use_sample_attributes)
 
         return new_node
 
 
-def create_value_node(value, new_node, dataset_filtered_by_value, dataset, attributes, attributes_types, use_sample_attributes):
+def create_value_node(value, new_node, original_dataset, dataset_filtered_by_value, dataset, attributes, attributes_types, use_sample_attributes):
     value_node = Node(value, parent=new_node)
 
     # There are no instances for that value
@@ -69,14 +69,14 @@ def create_value_node(value, new_node, dataset_filtered_by_value, dataset, attri
         Node(return_most_common_value(classes), parent=value_node)
     else:
         decision_tree(
-            dataset_filtered_by_value, attributes, attributes_types, use_sample_attributes, value_node)
+            original_dataset, dataset_filtered_by_value, attributes, attributes_types, use_sample_attributes, value_node)
 
 
 def is_dataset_with_only_one_class(dataset):
     if not dataset.empty:
         some_class = dataset['class'].tolist()[0]
         for index, row in dataset.iterrows():
-            if dataset.at[index, 'class'] != some_class:
+            if row['class'] != some_class:
                 return False
         return some_class
     return False
@@ -96,14 +96,17 @@ def create_sample_of_attributes(attributes):
     return attributes_sample
 
 
-def classify_instances(dataset, tree):
+def classify_instances(dataset, trees):
     classes = []
-
-    rendered_tree = RenderTree(tree)
-    root = rendered_tree.node
     for index, row in dataset.iterrows():
-        node = walk_tree_classifying_instance(root, row)
-        classes.append(eval(node.name))
+        predicted_class = []
+        for tree in trees:
+            rendered_tree = RenderTree(tree)
+            root = rendered_tree.node
+            node = walk_tree_classifying_instance(root, row)
+            predicted_class.append(eval(node.name))
+
+        classes.append(return_most_common_value(predicted_class))
 
     return classes
 
