@@ -1,0 +1,4 @@
+tempo categorico
+temperatura categorico
+umidade categorico
+ventoso categorico

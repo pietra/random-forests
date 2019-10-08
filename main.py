@@ -5,6 +5,7 @@ from anytree import Node
 from dataset_reader import read_dataset
 from util import write_tree_on_file, print_tree, read_attributes_type
 from decision_tree import decision_tree, classify_instances
+from ensemble import create_bootstraps
 
 
 def main():
@@ -13,10 +14,13 @@ def main():
     # 1st parameter: dataset.csv
     # 2nd parameter: dataset_config.txt
     # 3rd parameter: use sample of attributes when choosing next attribute to split?
+    # 4th parameter: how many trees?
     dataset, attributes = read_dataset(sys.argv[1])
     attributes_types = read_attributes_type(sys.argv[2])
-    attributes_types = read_attributes_type(sys.argv[2])
     use_sample_attributes = sys.argv[3]
+    number_of_trees = int(sys.argv[4])
+
+    bootstraps, training_sets = create_bootstraps(dataset, number_of_trees)
 
     attributes.remove('class')
     tree = Node("Decision Tree")
