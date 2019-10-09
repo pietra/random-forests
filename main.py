@@ -6,6 +6,7 @@ from dataset_reader import read_dataset
 from util import write_tree_on_file, print_tree, read_attributes_type
 from decision_tree import decision_tree, classify_instances
 from ensemble import create_bootstraps
+from cross_validation import cross_validation
 
 
 def main():
@@ -31,6 +32,8 @@ def main():
         final_decision_tree = decision_tree(
             dataset, bootstraps[i], attributes[:], attributes_types, use_sample_attributes, tree)
         trees.append(final_decision_tree)
+
+    performance = cross_validation(dataset, trees)
 
     classes = classify_instances(dataset, trees)
 
