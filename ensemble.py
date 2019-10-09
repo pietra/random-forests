@@ -28,7 +28,7 @@ def create_bootstraps(dataset, n):
             else:
                 training_sets[i] = training_sets[i].append(instance)
 
-    return bootstraps, training_sets
+    return bootstraps
 
 
 def initialize_set(n):

@@ -23,22 +23,7 @@ def main():
 
     attributes.remove('class')
 
-    # Ensemble:
-    bootstraps, training_sets = create_bootstraps(dataset, number_of_trees)
-    trees = []
-
-    for i in range(number_of_trees):
-        tree = Node("Decision Tree {}".format(i))
-        final_decision_tree = decision_tree(
-            dataset, bootstraps[i], attributes[:], attributes_types, use_sample_attributes, tree)
-        trees.append(final_decision_tree)
-
-    performance = cross_validation(dataset, trees)
-
-    classes = classify_instances(dataset, trees)
-
-    for tree in trees:
-        print_tree(tree)
+    accuracies = cross_validation(dataset, number_of_trees, attributes, attributes_types, use_sample_attributes)
 
     #write_tree_on_file(final_decision_tree)
 

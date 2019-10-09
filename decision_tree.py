@@ -14,11 +14,12 @@ from attributes_selection import id3_algorithm
 def decision_tree(original_dataset, dataset, attributes, attributes_types, use_sample_attributes, father=None):
     some_class = is_dataset_with_only_one_class(dataset)
     if some_class:
-        Node(some_class, parent=father)
+        return Node(some_class, parent=father)
+        
 
     elif not attributes:
         classes = dataset["class"].values.tolist()
-        Node(return_most_common_value(classes), parent=father)
+        return Node(return_most_common_value(classes), parent=father)
 
     else:
         if(use_sample_attributes == 'sim'):
@@ -27,7 +28,7 @@ def decision_tree(original_dataset, dataset, attributes, attributes_types, use_s
                 dataset, attributes_sample, attributes_types)
         else:
             attribute = id3_algorithm(dataset, attributes, attributes_types)
-        attributes.remove(attribute)
+            attributes.remove(attribute)
 
         new_node = Node(attribute, parent=father)
 
