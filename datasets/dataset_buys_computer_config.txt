@@ -1,0 +1,5 @@
+age categorico
+income categorico
+student categorico
+credit_rating categorico
+class categorico

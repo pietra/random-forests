@@ -1,5 +1,6 @@
 import sys
 
+import pandas
 from anytree import Node
 
 from dataset_reader import read_dataset
@@ -23,9 +24,12 @@ def main():
 
     attributes.remove('class')
 
-    accuracies = cross_validation(dataset, number_of_trees, attributes, attributes_types, use_sample_attributes)
+    mean_f1_measure = cross_validation(
+        dataset, number_of_trees, attributes, attributes_types, use_sample_attributes)
 
-    #write_tree_on_file(final_decision_tree)
+    print("---------------------")
+    print("Mean F1-Measure: {}".format(mean_f1_measure))
+    print("---------------------")
 
 
 if __name__ == "__main__":

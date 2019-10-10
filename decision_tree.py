@@ -15,7 +15,6 @@ def decision_tree(original_dataset, dataset, attributes, attributes_types, use_s
     some_class = is_dataset_with_only_one_class(dataset)
     if some_class:
         return Node(some_class, parent=father)
-        
 
     elif not attributes:
         classes = dataset["class"].values.tolist()
@@ -28,7 +27,7 @@ def decision_tree(original_dataset, dataset, attributes, attributes_types, use_s
                 dataset, attributes_sample, attributes_types)
         else:
             attribute = id3_algorithm(dataset, attributes, attributes_types)
-            attributes.remove(attribute)
+        attributes.remove(attribute)
 
         new_node = Node(attribute, parent=father)
 
@@ -48,16 +47,15 @@ def decision_tree(original_dataset, dataset, attributes, attributes_types, use_s
 
             # node with value <= median
             dataset_filtered_by_value = dataset[dataset[attribute] <= median]
-            value = '<= ' + str(median)
+            value = 'menor_ou_igual_a_' + str(median)
             create_value_node(value, new_node, original_dataset, dataset_filtered_by_value,
                               dataset, attributes, attributes_types, use_sample_attributes)
 
             # node with value > median
             dataset_filtered_by_value = dataset[dataset[attribute] > median]
-            value = '> ' + str(median)
+            value = 'maior_que_' + str(median)
             create_value_node(value, new_node, original_dataset, dataset_filtered_by_value,
                               dataset, attributes, attributes_types, use_sample_attributes)
-
         return new_node
 
 
@@ -105,7 +103,7 @@ def classify_instances(dataset, trees):
             rendered_tree = RenderTree(tree)
             root = rendered_tree.node
             node = walk_tree_classifying_instance(root, row)
-            predicted_class.append(eval(node.name))
+            predicted_class.append(node.name)
 
         classes.append(return_most_common_value(predicted_class))
 
@@ -119,8 +117,17 @@ def walk_tree_classifying_instance(node, instance):
         attribute = node.name
         children = node.children
 
-        value = eval(instance[attribute])
+        value = instance[attribute]
 
         for child in children:
-            if eval(child.name) == value:
+            child_name = child.name
+            if "menor_ou_igual_a" in child_name:
+                median = float(child_name.replace("menor_ou_igual_a_", ""))
+                if value <= median:
+                    return walk_tree_classifying_instance(child.children[0], instance)
+            elif "maior_que_" in child_name:
+                median = float(child_name.replace("maior_que_", ""))
+                if value > median:
+                    return walk_tree_classifying_instance(child.children[0], instance)
+            elif child_name == value:
                 return walk_tree_classifying_instance(child.children[0], instance)
