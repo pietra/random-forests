@@ -51,4 +51,4 @@ def find_attribute_type(attribute, attributes_types):
 
 def calculate_median_of_attribute(dataset, attribute):
     attribute_column = dataset[attribute]
-    return statistics.median(attribute_column)
+    return statistics.mean(attribute_column)

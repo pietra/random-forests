@@ -22,8 +22,6 @@ def main():
     use_sample_attributes = sys.argv[3]
     number_of_trees = int(sys.argv[4])
 
-    attributes.remove('class')
-
     mean_f1_measure = cross_validation(
         dataset, number_of_trees, attributes, attributes_types, use_sample_attributes)
 

@@ -12,6 +12,7 @@ FOLDS_NUMBER = 5
 
 
 def cross_validation(dataset, number_of_trees, attributes, attributes_types, use_sample_attributes):
+
     classes = remove_repeated_values_of_list(dataset["class"].values.tolist())
     dataset_by_class = organize_dataset_by_class(dataset, classes)
     folds = create_folds(classes, dataset_by_class, FOLDS_NUMBER)
@@ -40,6 +41,19 @@ def cross_validation(dataset, number_of_trees, attributes, attributes_types, use
 
 
 def calculate_f1_measure(classes_predicted, classes, dataset):
+    true_positives, false_negatives, false_positives = calculate_confusion_matrix(
+        dataset, classes, classes_predicted)
+
+    precision = calculate_precision(true_positives, false_positives)
+    recall = calculate_recall(true_positives, false_negatives)
+
+    if precision + recall > 0:
+        return 2 * precision * recall / (precision + recall)
+    else:
+        return 0
+
+
+def calculate_confusion_matrix(dataset, classes, classes_predicted):
     true_positives = {}
     false_negatives = {}
     false_positives = {}
@@ -69,13 +83,7 @@ def calculate_f1_measure(classes_predicted, classes, dataset):
                     false_negatives[evaluted_class] += 1
             i += 1
 
-    precision = calculate_precision(true_positives, false_positives)
-    recall = calculate_recall(true_positives, false_negatives)
-
-    if precision + recall > 0:
-        return 2 * precision * recall / (precision + recall)
-    else:
-        return 0
+    return true_positives, false_negatives, false_positives
 
 
 def calculate_precision(true_positives, false_positives):
@@ -130,13 +138,14 @@ def organize_dataset_by_class(dataset, classes):
     for class_a in classes:
         dictionary[class_a] = None
 
+    
     for index, row in dataset.iterrows():
         row_class = row['class']
         if dictionary[row_class] is None:
             dictionary[row_class] = pd.DataFrame([row])
         else:
             dictionary[row_class] = dictionary[row_class].append([row])
-
+    
     return dictionary
 
 

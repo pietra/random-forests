@@ -13,6 +13,7 @@ from attributes_selection import id3_algorithm
 
 def decision_tree(original_dataset, dataset, attributes, attributes_types, use_sample_attributes, father=None):
     some_class = is_dataset_with_only_one_class(dataset)
+    
     if some_class:
         return Node(some_class, parent=father)
 
@@ -27,7 +28,7 @@ def decision_tree(original_dataset, dataset, attributes, attributes_types, use_s
                 dataset, attributes_sample, attributes_types)
         else:
             attribute = id3_algorithm(dataset, attributes, attributes_types)
-        attributes.remove(attribute)
+            attributes.remove(attribute)
 
         new_node = Node(attribute, parent=father)
 
@@ -104,7 +105,6 @@ def classify_instances(dataset, trees):
             root = rendered_tree.node
             node = walk_tree_classifying_instance(root, row)
             predicted_class.append(node.name)
-
         classes.append(return_most_common_value(predicted_class))
 
     return classes
